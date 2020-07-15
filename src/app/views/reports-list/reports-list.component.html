@@ -1,0 +1,88 @@
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="my-4">Latest News
+                <small>Venezuela</small>
+            </h1>
+
+            <!-- Blog Post -->
+            <div *ngIf="loading" class="row justify-content-center">
+                <h6 class="text-secondary">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i> Loading...
+                </h6>
+            </div>
+            <div *ngIf="!loading && data && data.length == 0" class="row">
+                <div class="alert alert-danger col-12" role="alert">
+                    No results found for: "{{ filtersForm.txtSearch  }}"
+                </div>
+            </div>
+            <div *ngIf="!loading && errorLoading" class="row justify-content-center">
+                <div class="col-12 text-center alert alert-secondary">
+                    <h5><i class="fa fa-bug"></i></h5>
+                    <h6>Something went wrong.</h6>
+                    <h6>Please try again</h6>
+                </div>
+            </div>
+
+            <div *ngIf="!loading">
+                <div *ngFor="let item of data" class="card mb-4">
+
+                    <div class="card-body">
+                        <h2 class="card-title"><em>{{ item.fields.title }}</em></h2>
+                        <p class="card-text" *ngIf="item.fields.body">
+                            {{ getFirstPhrase(item.fields.body) }}
+                        </p>
+                        <a href="{{ item.fields.url_alias }}" target="_blank" class="btn btn-primary">Read More
+                            &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on {{ item.fields.date.created | date:'fullDate' }} by
+                        <a href="{{ item.fields.source[0].homepage }}"
+                            target="_blank">{{ item.fields.source[0].shortname }}</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Pagination -->
+            <div class="row">
+                <div class="col-12 justify-content-end d-flex">
+                    <ngb-pagination *ngIf="total" [maxSize]="10" [page]="filtersForm.page" [pageSize]="show"
+                        [collectionSize]="total" [boundaryLinks]="true" (pageChange)="pageChange($event)">
+                        <ng-template ngbPaginationFirst>Newest</ng-template>
+                        <ng-template ngbPaginationLast>Oldest</ng-template>
+                    </ngb-pagination>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input [(ngModel)]="filtersForm.txtSearch" type="text" class="form-control"
+                            placeholder="Search for..." (keyup.enter)="submitSearch()">
+                        <span class="input-group-append">
+                            <button (click)="submitSearch()" class="btn btn-secondary" type="button"><i
+                                    class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
