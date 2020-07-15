@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 
 
-app.use(express.static('./dist/waya-front'));
+app.use(express.static('./dist/alejandro-negrin-ocha-test'));
 
 app.get('/*', function (req, res) {
-    res.sendFile('index.html', { root: 'dist/waya-front/' }
+    res.sendFile('index.html', { root: 'dist/alejandro-negrin-ocha-test/' }
     );
 });
 
